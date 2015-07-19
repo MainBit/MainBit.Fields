@@ -1,0 +1,14 @@
+﻿<div class="input-container__value__item" data-bind='css: { last: isLast(), allset: isAllSet(), partialset: isPartialSet(), notingset: isNotingSet() }'>
+    <span class="date-edit date-edit_from">
+        <input placeholder="@T("Add new date range")" type="text" data-bind="value: dateFrom, dateTimeRangeItemName: 'From.Date', dateTimeRangeItemId: 'From_Date', event: { change: $parent.onChangeItem }" />
+    </span>
+    <span class="for-date-edit for-date-edit_from" data-bind="dateTimeRangeItemIdFor: 'From_Time'">@T("From")</span>
+    <span class="time-edit time-edit_from">
+        <input type="text" data-bind="value: timeFrom, dateTimeRangeItemName: 'From.Time', dateTimeRangeItemId: 'From_Time', event: { change: $parent.onChangeItem }" />
+    </span>
+    <span class="for-time-edit for-time-edit_to" data-bind="dateTimeRangeItemIdFor: 'To_Time'">@T("To")</span>
+    <span class="time-edit time-edit_to">
+        <input type="text" data-bind="value: timeTo, dateTimeRangeItemName: 'To.Time', dateTimeRangeItemId: 'To_Time', event: { change: $parent.onChangeItem }" />
+    </span>
+    <a href="" data-bind='click: $root.removeItem, visible: !isLast()'>@T("Delete")</a>
+</div>

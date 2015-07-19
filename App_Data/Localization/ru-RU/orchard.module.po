@@ -1,0 +1,29 @@
+ #: "~/Modules/MainBit.Fields/Views/EditorTemplates/Fields/DateTimeRange.Edit.cshtml"
+msgctxt "~/Modules/MainBit.Fields/Views/EditorTemplates/Fields/DateTimeRange.Edit.cshtml"
+msgid "From"
+msgstr "С"
+
+ #: "~/Modules/MainBit.Fields/Views/EditorTemplates/Fields/DateTimeRange.Edit.cshtml"
+msgctxt "~/Modules/MainBit.Fields/Views/EditorTemplates/Fields/DateTimeRange.Edit.cshtml"
+msgid "To"
+msgstr "До"
+
+ #: "~/Modules/MainBit.Fields/Views/Fields/DateTimeRange.cshtml"
+msgctxt "~/Modules/MainBit.Fields/Views/Fields/DateTimeRange.cshtml"
+msgid "From"
+msgstr "С"
+
+ #: "~/Modules/MainBit.Fields/Views/Fields/DateTimeRange.cshtml"
+msgctxt "~/Modules/MainBit.Fields/Views/Fields/DateTimeRange.cshtml"
+msgid "To"
+msgstr "До"
+
+ #: "~/Modules/MainBit.Fields/Views/DateTimeRangeEditor.Template-TimeRangeOfSpecificDate.cshtml"
+msgctxt "~/Modules/MainBit.Fields/Views/DateTimeRangeEditor.Template-TimeRangeOfSpecificDate.cshtml"
+msgid "From"
+msgstr "С"
+
+ #: "~/Modules/MainBit.Fields/Views/DateTimeRangeEditor.Template-TimeRangeOfSpecificDate.cshtml"
+msgctxt "~/Modules/MainBit.Fields/Views/DateTimeRangeEditor.Template-TimeRangeOfSpecificDate.cshtml"
+msgid "To"
+msgstr "До"

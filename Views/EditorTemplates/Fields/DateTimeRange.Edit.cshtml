@@ -1,0 +1,64 @@
+﻿@model MainBit.Fields.ViewModels.DateTimeRangeFieldViewModel
+@using MainBit.Fields.Settings;
+@{
+    using (Script.Foot())
+    {
+        // Generate the localization scripts.
+        if (Model.ShowDateFrom || Model.ShowDateTo) { @Display.CalendarsPickerLocalization() }
+        if (Model.ShowTimeFrom || Model.ShowTimeTo) { @Display.TimeEntryLocalization() }
+    }
+
+    Style.Require("jQueryCalendars_Picker");
+    Style.Require("jQueryUI_Calendars_Picker");
+    Style.Require("jQueryTimeEntry");
+    Style.Require("jQueryDateTimeEditor");
+
+    Script.Require("jQueryCalendars_All").AtFoot();
+    Script.Require("jQueryCalendars_Picker_Ext").AtFoot();
+    Script.Require("jQueryTimeEntry").AtFoot();
+    Script.Require("jQueryDateTimeEditor").AtFoot();
+
+
+    Script.Require("jQueryDateTimeRangeEditor").AtFoot();
+    //Style.Require("jQueryDateTimeRangeEditor").AtHead();
+    
+    var jsViewModel = Newtonsoft.Json.JsonConvert.SerializeObject(
+        new
+        {
+            items = Model.DateTimeRanges.Select(x => new
+            {
+                dateFrom = x.From.Date,
+                timeFrom = x.From.Time,
+                dateTo = x.To.Date,
+                timeTo = x.To.Time,
+            }).ToArray(),
+            showDateFrom = Model.ShowDateFrom,
+            showTimeFrom = Model.ShowTimeFrom,
+            showDateTo = Model.ShowDateTo,
+            showTimeTo = Model.ShowTimeTo,
+            multiple = Model.Settings.Multiple,
+            itemNamePrefix = Html.NameFor(m => m.DateTimeRanges).ToString(),
+            itemIdPrefix = Html.IdFor(m => m.DateTimeRanges).ToString(),
+        }
+    );
+
+    var templateName = "datetimerangeeditor-template_" + Model.Settings.Display.ToString().ToLower();  
+    using(Script.Foot()) {
+        <script type="text/javascript">
+            $(function () {
+                var dateTimeRangeViewModel = new DateTimeRangeViewModel('@Html.IdFor(m => m)', @Html.Raw(jsViewModel));
+            })
+        </script>
+        <script type="text/html" id="@templateName">
+            @Display(New.Create("DateTimeRangeEditor_Template__" + Model.Settings.Display.ToString()))
+        </script>
+    }
+}
+
+<fieldset class="input-container_datetimerange" id="@Html.IdFor(m => m)">
+    <label for="@Html.FieldIdFor(m => Model.DateTimeRanges)" @if (Model.Settings.Required) { <text> class="required" </text> }>@Model.Name</label>
+    <div class="input-container__value" data-bind="template: { name: '@templateName', foreach: items, afterRender: initOrchardDateTimePickers }"></div>
+@if (HasText(Model.Settings.Hint)) {
+    <span class="hint">@Model.Settings.Hint</span>
+}
+</fieldset>

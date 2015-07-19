@@ -1,0 +1,7 @@
+﻿<Placement>
+
+  <!-- DateTimeRange -->
+  <Place Fields_DateTimeRange_Edit="Content:2.5"/>
+  <Place Fields_DateTimeRange="Content:after"/>
+
+</Placement>
