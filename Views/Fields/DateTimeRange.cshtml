@@ -2,23 +2,10 @@
 @using System.Linq;
 @using MainBit.Fields.ViewModels;
 @{
-    string valueToDisplay = string.Empty;
     DateTimeRangeFieldViewModel viewModel = Model.Model;
-    if (viewModel.DateTimeRanges != null)
-    {
-        string[] translatedValues = viewModel.DateTimeRanges.Select(v =>
-            {
-                var valueFormat = "";
-                if (v.From.ShowDate && v.From.ShowTime && !v.To.ShowDate && v.To.ShowTime)
-                {
-                    valueFormat = "{0} {1}-{3}";
-                }
-                return string.Format(valueFormat, v.From.Date, v.From.Time, v.To.Date, v.To.Time);
-
-            }).ToArray();
-        string separator = T(", ").ToString();
-        valueToDisplay = string.Join(separator, translatedValues);
-    }
+    var _dateTimeRangeService = WorkContext.Resolve<MainBit.Fields.Services.IDateTimeRangeService>();
+    var valueToDisplay = _dateTimeRangeService.DisplayString(viewModel);
+    
     if (!string.IsNullOrEmpty(valueToDisplay))
     {
         string name = Model.ContentField.DisplayName;

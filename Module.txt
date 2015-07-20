@@ -9,4 +9,4 @@ Features:
     MainBit.Fields:
         Description: Contains the following fields: DateTimeRange
 		Category: Fields
-        Dependencies: Orchard.Fields, Common, Orchard.jQuery
+        Dependencies: Orchard.Fields, Common, Orchard.jQuery, Orchard.Tokens

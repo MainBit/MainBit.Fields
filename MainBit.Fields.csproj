@@ -101,13 +101,13 @@
     <Compile Include="Drivers\DateTimeRangeFieldDriver.cs" />
     <Compile Include="Fields\DateTimeRangeField.cs" />
     <Compile Include="ResourceManifest.cs" />
+    <Compile Include="Services\IDateTimeRangeService.cs" />
     <Compile Include="Settings\DateTimeRangeFieldEditorEvents.cs" />
     <Compile Include="Settings\DateTimeRangeFieldSettings.cs" />
+    <Compile Include="Tokens\FieldTokens.cs" />
     <Compile Include="ViewModels\DateTimeRangeFieldViewModel.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Placement.info">
       <SubType>Designer</SubType>

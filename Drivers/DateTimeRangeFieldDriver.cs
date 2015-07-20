@@ -14,14 +14,21 @@ using MainBit.Fields.Settings;
 using MainBit.Fields.Fields;
 using MainBit.Fields.ViewModels;
 using System.Collections.Generic;
+using MainBit.Fields.Services;
 
 namespace MainBit.Fields.Drivers {
     [UsedImplicitly]
     public class DateTimeRangeFieldDriver : ContentFieldDriver<DateTimeRangeField> {
-        private const string TemplateName = "Fields/DateTimeRange.Edit"; // EditorTemplates/Fields/DateTimeRange.Edit.cshtml
 
-        public DateTimeRangeFieldDriver(IOrchardServices services, IDateServices dateServices)
+        private readonly IDateTimeRangeService _dateTimeRangeService;
+        private const string TemplateName = "Fields/DateTimeRange.Edit"; // EditorTemplates/Fields/DateTimeRange.Edit.cshtml
+        
+
+        public DateTimeRangeFieldDriver(IOrchardServices services, IDateServices dateServices,
+            IDateTimeRangeService dateTimeRangeService)
         {
+            _dateTimeRangeService = dateTimeRangeService;
+
             Services = services;
             DateServices = dateServices;
             T = NullLocalizer.Instance;
@@ -43,7 +50,7 @@ namespace MainBit.Fields.Drivers {
             return ContentShape("Fields_DateTimeRange", // this is just a key in the Shape Table
                 GetDifferentiator(field, part),
                 () => {
-                    var viewModel = BuildViewModel(field);
+                    var viewModel = _dateTimeRangeService.BuildViewModel(field);
                     return shapeHelper.Fields_DateTimeRange( // this is the actual Shape which will be resolved (Fields/DateTimeRange.cshtml)
                         Model: viewModel);
                 }
@@ -52,7 +59,7 @@ namespace MainBit.Fields.Drivers {
 
         protected override DriverResult Editor(ContentPart part, DateTimeRangeField field, dynamic shapeHelper) {
 
-            var viewModel = BuildViewModel(field);
+            var viewModel = _dateTimeRangeService.BuildViewModel(field);
             return ContentShape("Fields_DateTimeRange_Edit", GetDifferentiator(field, part),
                 () => shapeHelper.EditorTemplate(TemplateName: TemplateName, Model: viewModel, Prefix: GetPrefix(field, part)));
         }
@@ -135,73 +142,6 @@ namespace MainBit.Fields.Drivers {
             return Editor(part, field, shapeHelper);
         }
 
-        private DateTimeRangeFieldViewModel BuildViewModel(DateTimeRangeField field)
-        {
-            var settings = field.PartFieldDefinition.Settings.GetModel<DateTimeRangeFieldSettings>();
-            
-            var viewModel = new DateTimeRangeFieldViewModel()
-            {
-                Name = field.DisplayName,
-                Settings = settings,
-            };
-            viewModel.SetDateTimeShown(settings.Display);
-            
-            viewModel.DateTimeRanges = field.DateTimeRanges
-                    .Select(p =>
-                    {
-                        var utcDateFrom = !String.IsNullOrWhiteSpace(p.DateFrom)
-                            ? DateTime.Parse(p.DateFrom, CultureInfo.InvariantCulture)
-                            : new DateTime(1980, 1, 1);
-                        var utcTimeFrom = !String.IsNullOrWhiteSpace(p.TimeFrom)
-                            ? DateTime.Parse(p.TimeFrom, CultureInfo.InvariantCulture)
-                            : new DateTime(1980, 1, 1, 12, 0, 0);
-                        var utcDateTimeFrom = new DateTime(
-                            utcDateFrom.Year, utcDateFrom.Month, utcDateFrom.Day,
-                            utcTimeFrom.Hour, utcTimeFrom.Minute, utcTimeFrom.Second);
-
-                        var utcDateTo = !String.IsNullOrWhiteSpace(p.DateTo)
-                            ? DateTime.Parse(p.DateTo, CultureInfo.InvariantCulture)
-                            : new DateTime(1980, 1, 1);
-                        var utcTimeTo = !String.IsNullOrWhiteSpace(p.TimeTo)
-                            ? DateTime.Parse(p.TimeTo, CultureInfo.InvariantCulture)
-                            : new DateTime(1980, 1, 1, 12, 0, 0);
-                        var utcDateTimeTo = new DateTime(
-                            utcDateTo.Year, utcDateTo.Month, utcDateTo.Day,
-                            utcTimeTo.Hour, utcTimeTo.Minute, utcTimeTo.Second);
-                        
-
-                        var dateTimeRange = new MainBit.Fields.ViewModels.DateTimeRangeEditor()
-                        {
-                            From = new DateTimeEditor()
-                            {
-                                Date = !String.IsNullOrWhiteSpace(p.DateFrom)
-                                    ? DateServices.ConvertToLocalDateString(utcDateTimeFrom, String.Empty)
-                                    : string.Empty,
-                                Time = !String.IsNullOrWhiteSpace(p.TimeFrom)
-                                    ? DateServices.ConvertToLocalTimeString(utcDateTimeFrom, String.Empty)
-                                    : string.Empty
-                            },
-                            To = new DateTimeEditor()
-                            {
-                                Date = !String.IsNullOrWhiteSpace(p.DateTo)
-                                    ? DateServices.ConvertToLocalDateString(utcDateTimeTo, String.Empty)
-                                    : string.Empty,
-                                Time = !String.IsNullOrWhiteSpace(p.TimeTo)
-                                    ? DateServices.ConvertToLocalTimeString(utcDateTimeTo, String.Empty)
-                                    : string.Empty
-                            },
-                        };
-
-                        dateTimeRange.From.ShowDate = viewModel.ShowDateFrom;
-                        dateTimeRange.From.ShowTime = viewModel.ShowTimeFrom;
-                        dateTimeRange.To.ShowDate = viewModel.ShowDateTo;
-                        dateTimeRange.To.ShowTime = viewModel.ShowTimeTo;
-
-                        return dateTimeRange;
-                    })
-                    .ToList();
-
-            return viewModel;
-        }
+        
     }
 }
