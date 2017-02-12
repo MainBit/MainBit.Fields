@@ -22,11 +22,11 @@ namespace MainBit.Fields.Services
 
     public class DateTimeRangeService : IDateTimeRangeService
     {
-        private readonly IDateServices _dateServices;
+        private readonly IDateLocalizationServices _dateLocalizationServices;
 
-        public DateTimeRangeService(IDateServices dateServices)
+        public DateTimeRangeService(IDateLocalizationServices dateLocalizationServices)
         {
-            _dateServices = dateServices;
+            _dateLocalizationServices = dateLocalizationServices;
 
             T = NullLocalizer.Instance;
         }
@@ -73,19 +73,19 @@ namespace MainBit.Fields.Services
                             From = new DateTimeEditor()
                             {
                                 Date = !String.IsNullOrWhiteSpace(p.DateFrom)
-                                    ? _dateServices.ConvertToLocalDateString(utcDateTimeFrom, String.Empty)
+                                    ? _dateLocalizationServices.ConvertToLocalizedDateString(utcDateTimeFrom)
                                     : string.Empty,
                                 Time = !String.IsNullOrWhiteSpace(p.TimeFrom)
-                                    ? _dateServices.ConvertToLocalTimeString(utcDateTimeFrom, String.Empty)
+                                    ? _dateLocalizationServices.ConvertToLocalizedTimeString(utcDateTimeFrom)
                                     : string.Empty
                             },
                             To = new DateTimeEditor()
                             {
                                 Date = !String.IsNullOrWhiteSpace(p.DateTo)
-                                    ? _dateServices.ConvertToLocalDateString(utcDateTimeTo, String.Empty)
+                                    ? _dateLocalizationServices.ConvertToLocalizedDateString(utcDateTimeTo)
                                     : string.Empty,
                                 Time = !String.IsNullOrWhiteSpace(p.TimeTo)
-                                    ? _dateServices.ConvertToLocalTimeString(utcDateTimeTo, String.Empty)
+                                    ? _dateLocalizationServices.ConvertToLocalizedTimeString(utcDateTimeTo)
                                     : string.Empty
                             },
                         };

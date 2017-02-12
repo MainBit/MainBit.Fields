@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Globalization;
 using System.Xml;
-using JetBrains.Annotations;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.ContentManagement.Handlers;
@@ -17,25 +16,24 @@ using System.Collections.Generic;
 using MainBit.Fields.Services;
 
 namespace MainBit.Fields.Drivers {
-    [UsedImplicitly]
     public class DateTimeRangeFieldDriver : ContentFieldDriver<DateTimeRangeField> {
 
         private readonly IDateTimeRangeService _dateTimeRangeService;
         private const string TemplateName = "Fields/DateTimeRange.Edit"; // EditorTemplates/Fields/DateTimeRange.Edit.cshtml
         
 
-        public DateTimeRangeFieldDriver(IOrchardServices services, IDateServices dateServices,
+        public DateTimeRangeFieldDriver(IOrchardServices services, IDateLocalizationServices dateLocalizationServices,
             IDateTimeRangeService dateTimeRangeService)
         {
             _dateTimeRangeService = dateTimeRangeService;
 
             Services = services;
-            DateServices = dateServices;
+            DateLocalizationServices = dateLocalizationServices;
             T = NullLocalizer.Instance;
         }
 
         public IOrchardServices Services { get; set; }
-        public IDateServices DateServices { get; set; }
+        public IDateLocalizationServices DateLocalizationServices { get; set; }
         public Localizer T { get; set; }
 
         private static string GetPrefix(ContentField field, ContentPart part) {
@@ -86,8 +84,8 @@ namespace MainBit.Fields.Drivers {
                         }
 
                         var newDateTimeRange = new Fields.DateTimeRange();
-                        var utcDateTimeForm = DateServices.ConvertFromLocalString(dateTimeRange.From.Date, dateTimeRange.From.Time);
-                        var utcDateTimeTo = DateServices.ConvertFromLocalString(dateTimeRange.To.Date, dateTimeRange.To.Time);
+                        var utcDateTimeForm = DateLocalizationServices.ConvertFromLocalizedString(dateTimeRange.From.Date, dateTimeRange.From.Time);
+                        var utcDateTimeTo = DateLocalizationServices.ConvertFromLocalizedString(dateTimeRange.To.Date, dateTimeRange.To.Time);
 
                         if (utcDateTimeForm.HasValue)
                         {
