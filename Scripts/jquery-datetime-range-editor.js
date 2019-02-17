@@ -166,7 +166,8 @@ var DateTimeRangeViewModel = function (containerId, vm) {
             scrollMonth: false,
             i18n: { ru: { dayOfWeek: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"] } },
             onGenerate: function () {
-                $(this).find('.xdsoft_date.xdsoft_weekend').addClass('xdsoft_disabled');
+                //this is the way to disable to pick the weekends
+                //$(this).find('.xdsoft_date.xdsoft_weekend').addClass('xdsoft_disabled');
                 var monthPicker = $(this).find('.xdsoft_mounthpicker');
                 monthPicker.find('.xdsoft_month').off('.xdsoft');
                 monthPicker.find('.xdsoft_prev, .xdsoft_next')
